@@ -27,9 +27,14 @@ if (argument1 == "my-tweets") {
     });
 }
 
-else if (argument1 == "spotify-this-song"&&argument2!=="undefined") {
-
-    spotify.search({ type: 'track', query: argument2}, function(error, data){
+else if (argument1 == "spotify-this-song") {
+    var songName = '';
+    if (!argument2) {
+      songName = 'The Sign'
+    } else {
+      songName = argument2
+    }
+    spotify.search({ type: 'track', query: songName}, function(error, data){
         if(!error){
           for(var i = 0; i < data.tracks.items.length; i++){
             var songData = data.tracks.items[i];
@@ -45,26 +50,17 @@ else if (argument1 == "spotify-this-song"&&argument2!=="undefined") {
       });
 }
 
-else if (argument1=="spotify-this-song" && argument2==null){
-    var sign="the sign";
-    spotify.search({ type: 'track', query: sign}, function(error, data){
-        if(!error){
-          for(var i = 0; i < data.tracks.items.length; i++){
-            var songData = data.tracks.items[i];
-            console.log("Artist: " + songData.artists[0].name);
-            console.log("Song: " + songData.name);
-            console.log("Preview URL: " + songData.preview_url);
-            console.log("Album: " + songData.album.name);
-          }
-        } else{
-          console.log('Error occurred.');
-        }
-      });
-}
+else if (argument1 == "movie-this") {
+  var movieName="";
+  if(!argument2){
+    movieName="Mr.Nobody"
+  }
+  else{
+    movieName=argument2
+  }
 
-else if (argument1 == "movie-this"&& argument2 !=="undefined") {
    
-    request("http://www.omdbapi.com/?t="+argument2+"&y=&plot=short&apikey=trilogy", function(error, response, body) {
+    request("http://www.omdbapi.com/?t="+movieName+"&y=&plot=short&apikey=trilogy", function(error, response, body) {
     
   if(!error && response.statusCode === 200) {
     
@@ -73,7 +69,6 @@ else if (argument1 == "movie-this"&& argument2 !=="undefined") {
         console.log(movie.Year);
         console.log(movie.Language);
         console.log( movie.Country);
-        console.log(movie.tomatoRating);
         console.log( movie.Plot);
         console.log(movie.Actors);
       }
@@ -83,27 +78,6 @@ else if (argument1 == "movie-this"&& argument2 !=="undefined") {
     
 }
 
-else if (argument1 == "movie-this" && argument2==null) {
-  var nobody="Mr. Nobody";
-   
-  request("http://www.omdbapi.com/?t="+nobody+"&y=&plot=short&apikey=trilogy", function(error, response, body) {
-  
-if(!error && response.statusCode === 200) {
-  
-      movie = JSON.parse(body);
-      console.log(movie.Title);
-      console.log(movie.Year);
-      console.log(movie.Language);
-      console.log( movie.Country);
-      console.log(movie.tomatoRating);
-      console.log( movie.Plot);
-      console.log(movie.Actors);
-    }
-
-    else{console.log(error);}
-  });
-  
-}
 
 else if (argument1 == "do-what-it-says") {
     fs.readFile('random.txt', "utf8", function(error, data){
